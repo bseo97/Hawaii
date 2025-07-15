@@ -23,8 +23,13 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('.'));
 
-// PostgreSQL setup
-const { Pool } = require('pg');
+// PostgreSQL setup (local, uncomment to use)
+// const pool = new Pool({
+//     connectionString: process.env.DATABASE_URL || 'postgresql://bogyeongseo@localhost:5432/hawaii_planner',
+//     ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('railway.app') ? { rejectUnauthorized: false } : false
+// });
+
+// const { Pool } = require('pg');
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL || 'postgresql://bogyeongseo@localhost:5432/hawaii_planner',
@@ -32,7 +37,6 @@ const pool = new Pool({
 });
 
 module.exports = pool;
-
 
 // Helper to run queries
 async function query(sql, params) {
