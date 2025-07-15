@@ -17,6 +17,7 @@ class HawaiiItineraryPlanner {
         this.setupEventListeners();
         this.setupDragAndDrop();
         this.setupDatePickerListeners();
+        this.setupGlobalTooltipListeners();
         this.loadInitialData();
     }
 
@@ -1315,6 +1316,24 @@ class HawaiiItineraryPlanner {
         return iconMap[category.toLowerCase()] || 'fas fa-star';
     }
 
+    getMapLink(place) {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        
+        if (isIOS) {
+            // Use Apple Maps on iOS devices with proper parameters
+            if (place.name && place.formatted_address) {
+                return `https://maps.apple.com/?q=${encodeURIComponent(place.name)}&address=${encodeURIComponent(place.formatted_address)}`;
+            } else if (place.name) {
+                return `https://maps.apple.com/?q=${encodeURIComponent(place.name)}`;
+            } else {
+                return `https://maps.apple.com/?q=${encodeURIComponent(place.formatted_address || 'Unknown location')}`;
+            }
+        } else {
+            // Use Google Maps on other devices
+            return `https://www.google.com/maps/place/?q=place_id:${place.place_id}`;
+        }
+    }
+
     openEditActivityModal(activityId) {
         // Get current activity data from the DOM
         const activityElement = document.querySelector(`[data-activity-id="${activityId}"]`);
@@ -1429,6 +1448,7 @@ class HawaiiItineraryPlanner {
 
     addLocationHoverListeners(locationSpan, locationPreview = null) {
         let hoverTimeout;
+        let lastScrollY = window.scrollY;
 
         locationSpan.addEventListener('mouseenter', (e) => {
             // Clear any pending hide timeout
@@ -1468,16 +1488,66 @@ class HawaiiItineraryPlanner {
             if (hoverTimeout) {
                 clearTimeout(hoverTimeout);
             }
-            // Add a delay before hiding to allow user to move to tooltip
+            // Add a longer delay before hiding to allow user to move to tooltip
             this.hideTimeout = setTimeout(() => {
                 this.hideLocationHoverPreview();
-            }, 300); // 300ms delay before hiding
+            }, 500); // Increased to 500ms delay before hiding
         });
 
-        // Also hide on scroll or click elsewhere
-        document.addEventListener('scroll', () => {
-            this.hideLocationHoverPreview();
+        // Handle click events for mobile devices
+        locationSpan.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Clear any existing timeout
+            if (this.hideTimeout) {
+                clearTimeout(this.hideTimeout);
+                this.hideTimeout = null;
+            }
+
+            const locationText = locationSpan.dataset.location || locationSpan.textContent.trim();
+            
+            if (locationText && !locationText.startsWith('Click to') && locationText !== '' && locationText !== 'No location set') {
+                // Try to get stored location preview data first
+                const activityRow = locationSpan.closest('.activity-table-row');
+                let storedPreview = locationPreview;
+                
+                if (!storedPreview && activityRow && activityRow.dataset.locationPreview) {
+                    try {
+                        storedPreview = JSON.parse(activityRow.dataset.locationPreview);
+                    } catch (e) {
+                        console.log('Could not parse stored location preview');
+                    }
+                }
+                
+                if (storedPreview) {
+                    this.showStoredLocationHoverPreview(e.target, storedPreview);
+                } else {
+                    // Fallback to API call if no stored data
+                    this.showLocationHoverPreview(e.target, locationText);
+                }
+            }
         });
+
+        // Only hide on significant scroll (more than 50px) to avoid hiding during small movements
+        const scrollHandler = () => {
+            const currentScrollY = window.scrollY;
+            const scrollDifference = Math.abs(currentScrollY - lastScrollY);
+            
+            if (scrollDifference > 50) {
+                this.hideLocationHoverPreview();
+                lastScrollY = currentScrollY;
+            }
+        };
+
+        // Store reference to remove listener later if needed
+        if (!this.scrollHandlers) {
+            this.scrollHandlers = new Set();
+        }
+        
+        if (!this.scrollHandlers.has(scrollHandler)) {
+            document.addEventListener('scroll', scrollHandler, { passive: true });
+            this.scrollHandlers.add(scrollHandler);
+        }
     }
 
     showStoredLocationHoverPreview(targetElement, locationPreview) {
@@ -1513,7 +1583,7 @@ class HawaiiItineraryPlanner {
                 ` : ''}
                 <div class="hover-actions">
                     ${locationPreview.website ? `<a href="${locationPreview.website}" target="_blank" class="hover-action-btn">🌐 Website</a>` : ''}
-                    <a href="https://www.google.com/maps/place/?q=place_id:${locationPreview.place_id}" target="_blank" class="hover-action-btn">📍 View on Maps</a>
+                    <a href="${this.getMapLink(locationPreview)}" target="_blank" class="hover-action-btn">📍 View on Maps</a>
                 </div>
             </div>
         `;
@@ -1572,7 +1642,7 @@ class HawaiiItineraryPlanner {
                     ` : ''}
                     <div class="hover-actions">
                         ${place.website ? `<a href="${place.website}" target="_blank" class="hover-action-btn">🌐 Website</a>` : ''}
-                        <a href="https://www.google.com/maps/place/?q=place_id:${place.place_id}" target="_blank" class="hover-action-btn">📍 View on Maps</a>
+                        <a href="${this.getMapLink(place)}" target="_blank" class="hover-action-btn">📍 View on Maps</a>
                     </div>
                 </div>
             `;
@@ -1626,9 +1696,41 @@ class HawaiiItineraryPlanner {
         });
 
         tooltip.addEventListener('mouseleave', () => {
-            // Hide tooltip when leaving it
-            this.hideLocationHoverPreview();
+            // Add a delay before hiding to allow for small mouse movements
+            this.hideTimeout = setTimeout(() => {
+                this.hideLocationHoverPreview();
+            }, 200); // Short delay for mouseleave
         });
+
+        // Prevent tooltip from closing when clicking on buttons (especially for mobile)
+        tooltip.addEventListener('click', (e) => {
+            // Don't prevent default for links - let them work normally
+            if (e.target.tagName === 'A' || e.target.closest('a')) {
+                // Clear timeout but don't prevent the link click
+                if (this.hideTimeout) {
+                    clearTimeout(this.hideTimeout);
+                    this.hideTimeout = null;
+                }
+                // Hide tooltip after a short delay to allow link to open
+                setTimeout(() => {
+                    this.hideLocationHoverPreview();
+                }, 100);
+                return;
+            }
+            
+            // For other clicks, prevent bubbling
+            e.stopPropagation();
+        });
+
+        // Handle touch events for mobile
+        tooltip.addEventListener('touchstart', (e) => {
+            // Clear any pending hide timeout on touch
+            if (this.hideTimeout) {
+                clearTimeout(this.hideTimeout);
+                this.hideTimeout = null;
+            }
+            e.stopPropagation();
+        }, { passive: true });
     }
 
     hideLocationHoverPreview() {
@@ -1642,6 +1744,26 @@ class HawaiiItineraryPlanner {
             this.hideTimeout = null;
         }
     }
+
+    setupGlobalTooltipListeners() {
+        // Handle clicks outside tooltip to close it
+        document.addEventListener('click', (e) => {
+            if (this.currentHoverTooltip && 
+                !this.currentHoverTooltip.contains(e.target) && 
+                !e.target.closest('.location-text')) {
+                this.hideLocationHoverPreview();
+            }
+        });
+
+        // Handle escape key to close tooltip
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.currentHoverTooltip) {
+                this.hideLocationHoverPreview();
+            }
+        });
+    }
+
+
 
     addNoteHoverListeners(noteSpan) {
         let hoverTimeout;
@@ -1804,7 +1926,7 @@ class HawaiiItineraryPlanner {
                     </div>
                     <div class="location-actions">
                         ${locationPreview.website ? `<a href="${locationPreview.website}" target="_blank" class="view-on-map">🌐 Website</a>` : ''}
-                        <a href="https://www.google.com/maps/place/?q=place_id:${locationPreview.place_id}" target="_blank" class="view-on-map">📍 View on Maps</a>
+                        <a href="${this.getMapLink(locationPreview)}" target="_blank" class="view-on-map">📍 View on Maps</a>
                     </div>
                 </div>
             </div>
@@ -1862,7 +1984,7 @@ class HawaiiItineraryPlanner {
                         </div>
                         <div class="location-actions">
                             ${place.website ? `<a href="${place.website}" target="_blank" class="view-on-map">🌐 Website</a>` : ''}
-                            <a href="https://www.google.com/maps/place/?q=place_id:${place.place_id}" target="_blank" class="view-on-map">📍 View on Maps</a>
+                            <a href="${this.getMapLink(place)}" target="_blank" class="view-on-map">📍 View on Maps</a>
                         </div>
                     </div>
                 </div>
@@ -1927,7 +2049,7 @@ class HawaiiItineraryPlanner {
                         </div>
                         <div class="location-actions">
                             ${place.website ? `<a href="${place.website}" target="_blank" class="view-on-map">🌐 Website</a>` : ''}
-                            <a href="https://www.google.com/maps/place/?q=place_id:${place.place_id}" target="_blank" class="view-on-map">📍 View on Maps</a>
+                            <a href="${this.getMapLink(place)}" target="_blank" class="view-on-map">📍 View on Maps</a>
                         </div>
                     </div>
                 </div>
@@ -2110,7 +2232,7 @@ class HawaiiItineraryPlanner {
                         </div>
                         <div class="location-actions">
                             ${place.website ? `<a href="${place.website}" target="_blank" class="view-on-map">🌐 Website</a>` : ''}
-                            <a href="https://www.google.com/maps/place/?q=place_id:${place.place_id}" target="_blank" class="view-on-map">📍 View on Maps</a>
+                            <a href="${this.getMapLink(place)}" target="_blank" class="view-on-map">📍 View on Maps</a>
                         </div>
                     </div>
                 </div>

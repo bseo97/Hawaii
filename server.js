@@ -33,7 +33,7 @@ app.use(express.static('.'));
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL || 'postgresql://bogyeongseo@localhost:5432/hawaii_planner',
-    ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+    ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('railway.app') ? { rejectUnauthorized: false } : false
 });
 
 module.exports = pool;

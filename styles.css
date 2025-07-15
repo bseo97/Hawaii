@@ -1693,7 +1693,8 @@ button, .activity, .location-text {
     min-height: 200px;
     background: white;
     border-radius: 8px;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: visible;
     border: 1px solid #e5e7eb;
 }
 
@@ -1703,6 +1704,7 @@ button, .activity, .location-text {
     position: sticky;
     top: 0;
     z-index: 10;
+    min-width: 720px;
 }
 
 .activity-table-row {
@@ -1714,6 +1716,85 @@ button, .activity, .location-text {
     border-bottom: 1px solid #e9ecef;
     transition: all 0.2s ease;
     min-height: 60px;
+    min-width: 720px;
+}
+
+/* Mobile responsive layout - fix actions alignment */
+@media (max-width: 768px) {
+    /* Hide table header on mobile */
+    .activity-table-header {
+        display: none;
+    }
+    
+    .activity-table-row {
+        display: block;
+        min-width: auto;
+        padding: 16px;
+        background: white;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .activity-cell {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        margin-bottom: 12px;
+        border-bottom: 1px solid #f0f0f0;
+        text-align: left;
+    }
+    
+    .activity-cell:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        justify-content: flex-end;
+    }
+    
+    /* Add labels for mobile */
+    .activity-cell:nth-child(1)::before { content: 'DATE: '; }
+    .activity-cell:nth-child(2)::before { content: 'LOCATION: '; }
+    .activity-cell:nth-child(3)::before { content: 'CATEGORY: '; }
+    .activity-cell:nth-child(4)::before { content: 'NOTE: '; }
+    .activity-cell:nth-child(5)::before { content: 'ACTIONS: '; }
+    
+    .activity-cell::before {
+        font-weight: 600;
+        color: #666;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-right: 12px;
+        min-width: 80px;
+        flex-shrink: 0;
+    }
+    
+    .actions-cell {
+        padding: 8px 0 !important;
+        justify-content: flex-end !important;
+        max-width: none;
+        min-width: auto;
+    }
+    
+    .actions-cell::before {
+        margin-right: 12px;
+    }
+    
+    .activity-actions {
+        margin-left: auto;
+    }
+    
+    /* Adjust category display on mobile */
+    .category-cell {
+        justify-content: flex-end;
+    }
+    
+    /* Make location clickable area larger on mobile */
+    .location-text {
+        text-align: right;
+        flex: 1;
+    }
 }
 
 .activity-table-row:not(.header-row):hover {
