@@ -24,10 +24,15 @@ app.use(bodyParser.json());
 app.use(express.static('.'));
 
 // PostgreSQL setup
+const { Pool } = require('pg');
+
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL || 'postgresql://bogyeongseo@localhost:5432/hawaii_planner',
-    ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('railway.app') ? { rejectUnauthorized: false } : false
+    ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
+
+module.exports = pool;
+
 
 // Helper to run queries
 async function query(sql, params) {
@@ -70,12 +75,21 @@ async function initDb() {
         note TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`);
+    await query(`CREATE TABLE IF NOT EXISTS library_activities (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        type TEXT NOT NULL,
+        icon TEXT NOT NULL,
+        category TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`);
     // Add new columns if they don't exist (for migration)
     try {
         await query('ALTER TABLE activities ADD COLUMN IF NOT EXISTS activity_date TEXT');
         await query('ALTER TABLE activities ADD COLUMN IF NOT EXISTS location TEXT');
         await query('ALTER TABLE activities ADD COLUMN IF NOT EXISTS category TEXT');
         await query('ALTER TABLE activities ADD COLUMN IF NOT EXISTS note TEXT');
+        await query('ALTER TABLE activities ADD COLUMN IF NOT EXISTS location_preview TEXT');
     } catch (e) {
         console.log('Migration columns may already exist');
     }
@@ -284,6 +298,37 @@ io.on('connection', (socket) => {
         await query('DELETE FROM activities');
         await query('DELETE FROM days WHERE trip_id = $1', [DEFAULT_TRIP_ID]);
         io.emit('all-cleared');
+    });
+
+    // Handle adding custom library activity
+    socket.on('add-library-activity', async (data) => {
+        console.log('Adding custom library activity:', data);
+        
+        const insert = await query('INSERT INTO library_activities (name, type, icon, category) VALUES ($1, $2, $3, $4) RETURNING id',
+            [data.name, data.type, data.icon, data.category]);
+        
+        const libraryActivity = {
+            id: insert.rows[0].id,
+            name: data.name,
+            type: data.type,
+            icon: data.icon,
+            category: data.category
+        };
+        
+        io.emit('library-activity-added', libraryActivity);
+    });
+
+    // Handle removing custom library activity
+    socket.on('remove-library-activity', async (activityId) => {
+        console.log('Removing custom library activity:', activityId);
+        await query('DELETE FROM library_activities WHERE id = $1', [activityId]);
+        io.emit('library-activity-removed', activityId);
+    });
+
+    // Handle loading custom library activities
+    socket.on('load-library-activities', async () => {
+        const result = await query('SELECT * FROM library_activities ORDER BY created_at ASC');
+        socket.emit('library-activities-loaded', result.rows);
     });
 
     socket.on('disconnect', () => {
