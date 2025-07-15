@@ -1,0 +1,29 @@
+=== Hawaii Itinerary Planner - Environment Setup ===
+
+To get the best location autocomplete results, set up your Google Places API key:
+
+1. Create a .env file in your project root:
+   
+   GOOGLE_PLACES_API_KEY=your_actual_api_key_here
+
+2. Get your Google Places API key:
+   - Go to: https://console.cloud.google.com/apis/credentials
+   - Create a new project or select existing
+   - Enable the "Places API" and "Maps JavaScript API"
+   - Create credentials (API Key)
+   - Restrict the API key to your domain for security
+   - Copy your API key
+
+3. Optional environment variables:
+   
+   # Database (uses local PostgreSQL by default)
+   DATABASE_URL=postgresql://username:password@localhost:5432/hawaii_planner
+   
+   # Server Port (defaults to 3000)
+   PORT=3000
+
+4. Restart your server after adding the .env file:
+   
+   node server.js
+
+Note: If no Google API key is provided, the app automatically falls back to OpenStreetMap search (free but less comprehensive). 

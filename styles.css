@@ -267,13 +267,13 @@ body {
 
 .days-container {
     display: flex;
+    flex-direction: column;
     gap: 20px;
-    overflow-x: auto;
     padding-bottom: 10px;
 }
 
 .day-column {
-    min-width: 280px;
+    width: 100%;
     background: #f8f9fa;
     border-radius: 12px;
     padding: 20px;
@@ -519,11 +519,11 @@ body {
     }
     
     .days-container {
-        flex-direction: column;
+        gap: 15px;
     }
     
     .day-column {
-        min-width: auto;
+        padding: 15px;
     }
     
     .summary-stats {
@@ -590,4 +590,1145 @@ body {
 .drag-over {
     background: rgba(102, 126, 234, 0.1);
     border-color: #667eea;
+}
+
+/* Empty State Styles */
+.empty-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    padding: 40px;
+    width: 100%;
+    flex: 1;
+}
+
+.empty-content {
+    text-align: center;
+    color: #6b7280;
+}
+
+.empty-content i {
+    font-size: 4rem;
+    color: #d1d5db;
+    margin-bottom: 20px;
+}
+
+.empty-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #374151;
+}
+
+.empty-content p {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* Edit and Delete Button Styles */
+.edit-category {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 8px;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.edit-category:hover {
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.delete-activity {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-left: 8px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.activity:hover .delete-activity {
+    opacity: 1;
+}
+
+.delete-activity:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+}
+
+.category-name {
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.category-name:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.category-name-input {
+    background: white;
+    border: 2px solid #667eea;
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    min-width: 100px;
+}
+
+.category-name-input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Enhanced Activity Styles */
+.activity {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: grab;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.activity:hover {
+    border-color: #667eea;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.activity i {
+    margin-right: 8px;
+    width: 16px;
+    text-align: center;
+}
+
+.activity span {
+    flex: 1;
+    font-weight: 500;
+}
+
+/* Day Activities Container - Table Layout */
+.day-activities-container {
+    min-height: 200px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+}
+
+.activity-table-header {
+    background: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.activity-table-row {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr 2fr 1fr;
+    gap: 8px;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+    min-height: 50px;
+}
+
+.activity-table-row:not(.header-row):hover {
+    background: #f8f9fa;
+}
+
+.header-row {
+    font-weight: 600;
+    color: #495057;
+    background: #f8f9fa;
+}
+
+.activity-cell {
+    padding: 8px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.header-cell {
+    font-weight: 600;
+    color: #495057;
+    text-align: center;
+    padding: 12px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.location-cell-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.location-text {
+    cursor: pointer;
+    color: #333;
+    text-align: center;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.location-text:hover {
+    background: #f0f8ff;
+    color: #667eea;
+    border: 1px dashed #667eea;
+}
+
+.category-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.category-cell i {
+    color: #667eea;
+    font-size: 1rem;
+    width: 16px;
+    text-align: center;
+}
+
+.actions-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-direction: column;
+}
+
+.actions-cell .activity-name {
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.activity-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-activity-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    transition: all 0.3s ease;
+}
+
+.edit-activity-btn:hover {
+    background: #5a67d8;
+    transform: scale(1.1);
+}
+
+.activity-name {
+    font-weight: 500;
+    color: #333;
+    text-align: center;
+}
+
+.activity-field-input {
+    width: 100%;
+    border: 2px solid #667eea;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.9rem;
+    background: white;
+    color: #333;
+}
+
+.activity-field-input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Activity Details Modal */
+.activity-details-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 0;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f8f9fa;
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.close-modal:hover {
+    color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    line-height: 1.4;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.5;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px 25px;
+    border-top: 1px solid #e5e7eb;
+    background: #f8f9fa;
+    border-radius: 0 0 12px 12px;
+}
+
+.btn-cancel,
+.btn-add {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.btn-cancel {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background: #5a6268;
+}
+
+.btn-add {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.btn-add:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Location Hover Tooltip */
+.location-hover-tooltip {
+    position: absolute;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    max-width: 350px;
+    border: 1px solid #e5e7eb;
+    animation: fadeIn 0.2s ease;
+}
+
+.hover-tooltip-content {
+    padding: 0;
+}
+
+.hover-location-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.hover-location-header h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.hover-location-header p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.hover-rating {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.rating-stars {
+    color: #fbbf24;
+    font-weight: 600;
+}
+
+.rating-count {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.hover-photo {
+    padding: 0;
+}
+
+.hover-photo img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+.hover-status {
+    padding: 10px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.status.open {
+    color: #059669;
+    font-weight: 600;
+}
+
+.status.closed {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.hover-actions {
+    padding: 15px 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.hover-action-btn {
+    background: #f8f9fa;
+    color: #333;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.hover-action-btn:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+    text-decoration: none;
+}
+
+/* Drop zone for new table layout */
+.day-activities {
+    min-height: 100px;
+    position: relative;
+}
+
+.day-activities:empty:before {
+    content: "Drop activities here or click + to add";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #9ca3af;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+.day-activities.drag-over {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+/* Responsive design for activity table */
+@media (max-width: 768px) {
+    .activity-table-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 10px;
+    }
+    
+    .activity-cell {
+        border-bottom: 1px solid #f1f3f4;
+        padding: 8px 0;
+    }
+    
+    .header-cell {
+        display: none;
+    }
+    
+    .activity-cell:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #495057;
+        display: block;
+        margin-bottom: 4px;
+    }
+    
+    .activity-cell[data-field="activityDate"]:before {
+        content: "Date: ";
+    }
+    
+    .activity-cell[data-field="location"]:before {
+        content: "Location: ";
+    }
+    
+    .activity-cell[data-field="category"]:before {
+        content: "Category: ";
+    }
+    
+    .activity-cell[data-field="note"]:before {
+        content: "Note: ";
+    }
+    
+    .actions-cell:before {
+        content: "Actions: ";
+    }
+}
+
+/* Location Autocomplete Suggestions */
+.location-suggestions {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.suggestion-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f3f4;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background: #f8f9fa;
+}
+
+.suggestion-item::before {
+    content: "📍";
+    font-size: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.suggestion-content {
+    flex: 1;
+}
+
+.suggestion-name {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 2px;
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+
+.suggestion-details {
+    color: #6c757d;
+    font-size: 0.8rem;
+    line-height: 1.3;
+}
+
+/* Loading state for location search */
+.location-searching::after {
+    content: " 🔍";
+    opacity: 0.5;
+}
+
+/* Enhanced input styling for location fields */
+input[placeholder*="location"]:focus,
+input[id*="location"]:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
+/* Location Preview Styles */
+.location-preview {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f8f9fa;
+    min-height: 120px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.no-location,
+.loading-preview,
+.error-preview {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    padding: 30px 10px;
+}
+
+.loading-preview {
+    color: #667eea;
+}
+
+.error-preview {
+    color: #dc3545;
+}
+
+.location-details {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.location-photo-container {
+    flex-shrink: 0;
+    width: 100px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.location-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.no-photo {
+    font-size: 0.8rem;
+    color: #6c757d;
+    text-align: center;
+}
+
+.location-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.location-name {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.2;
+}
+
+.location-address {
+    margin: 0 0 10px 0;
+    font-size: 0.85rem;
+    color: #6c757d;
+    line-height: 1.3;
+}
+
+.location-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.location-rating,
+.location-status {
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.location-rating {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.location-status.open {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.location-status.closed {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.location-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.view-on-map,
+.visit-website {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.view-on-map {
+    background: #667eea;
+    color: white;
+}
+
+.view-on-map:hover {
+    background: #5a6fd8;
+    transform: translateY(-1px);
+}
+
+.visit-website {
+    background: #28a745;
+    color: white;
+}
+
+.visit-website:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+/* Responsive location preview */
+@media (max-width: 480px) {
+    .location-details {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .location-photo-container {
+        width: 100%;
+        height: 120px;
+    }
+    
+    .location-actions {
+        justify-content: center;
+    }
+} 
+
+/* Export/Print Buttons */
+.export-section {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    justify-content: center;
+}
+
+.export-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.export-btn:hover {
+    background: #5a67d8;
+    transform: translateY(-2px);
+}
+
+/* Location Hover Tooltip Styles */
+.location-hover-tooltip {
+    position: absolute;
+    z-index: 10000;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e9ecef;
+    max-width: 320px;
+    opacity: 0;
+    animation: tooltipFadeIn 0.2s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hover-tooltip-content {
+    padding: 16px;
+}
+
+.hover-location-header h3 {
+    margin: 0 0 4px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.2;
+}
+
+.hover-location-header p {
+    margin: 0 0 12px 0;
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.3;
+}
+
+.hover-rating {
+    margin-bottom: 12px;
+}
+
+.hover-rating .rating-stars {
+    color: #f39c12;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.hover-rating .rating-count {
+    color: #666;
+    font-size: 0.85rem;
+    margin-left: 6px;
+}
+
+.hover-photo {
+    margin-bottom: 12px;
+}
+
+.hover-photo img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.hover-status {
+    margin-bottom: 12px;
+}
+
+.hover-status .status {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.hover-status .status.open {
+    color: #28a745;
+}
+
+.hover-status .status.closed {
+    color: #dc3545;
+}
+
+.hover-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.hover-action-btn {
+    background: #667eea;
+    color: white;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.hover-action-btn:hover {
+    background: #5a67d8;
+    text-decoration: none;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Legacy location hover styles - now handled by .location-text */ 
+
+/* Activity Table Styles */
+.day-activities {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.activity-table-header {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr 2fr 1fr;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    border: 1px solid #e9ecef;
+}
+
+.activity-table-row {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr 2fr 1fr;
+    gap: 12px;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    align-items: center;
+}
+
+.activity-table-row:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-color: #667eea;
+}
+
+.activity-cell {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #333;
+    min-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.category-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.category-cell i {
+    color: #667eea;
+    font-size: 1rem;
+}
+
+.actions-cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.activity-name {
+    font-weight: 500;
+    color: #333;
+    flex: 1;
+    text-align: left;
+}
+
+.editable-cell {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    min-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.editable-cell:hover {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+/* Location Cell Styles */
+.location-cell-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+}
+
+.location-text {
+    cursor: help;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    flex: 1;
+    text-align: center;
+}
+
+.location-text:hover {
+    background: rgba(102, 126, 234, 0.05);
+}
+
+.location-edit-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.location-edit-btn:hover {
+    background: #5a6268;
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.location-field-input {
+    width: 100%;
+    padding: 4px 8px;
+    border: 1px solid #667eea;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+/* Remove old location hover styles and replace with new ones */
+.location-text[data-location]:not([data-location=""]) {
+    cursor: help;
+    position: relative;
+}
+
+.location-text[data-location]:not([data-location=""]):hover {
+    background: rgba(102, 126, 234, 0.05);
+    border-radius: 4px;
 } 
