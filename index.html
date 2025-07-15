@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌺 Hawaii Itinerary Planner</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-palm-tree"></i> Hawaii Itinerary Planner</h1>
+                <p>Plan your perfect Hawaiian adventure together</p>
+            </div>
+        </header>
+
+        <!-- Trip Info Section -->
+        <section class="trip-info">
+            <div class="trip-details">
+                <div class="trip-input">
+                    <label for="trip-title">Trip Title:</label>
+                    <input type="text" id="trip-title" placeholder="Our Hawaiian Dream Vacation" value="Our Hawaiian Dream Vacation">
+                </div>
+                <div class="trip-input">
+                    <label for="trip-dates">Dates:</label>
+                    <input type="text" id="trip-dates" placeholder="Dec 15-22, 2024" value="Dec 15-22, 2024">
+                </div>
+                <div class="trip-input">
+                    <label for="islands">Islands:</label>
+                    <select id="islands">
+                        <option value="Oahu">Oahu</option>
+                        <option value="Maui">Maui</option>
+                        <option value="Big Island">Big Island</option>
+                        <option value="Kauai">Kauai</option>
+                        <option value="Multiple">Multiple Islands</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Planner -->
+        <main class="planner-container">
+            <!-- Activity Library -->
+            <section class="activity-library">
+                <h2><i class="fas fa-bookmark"></i> Activity Library</h2>
+                <div class="activity-categories">
+                    <div class="category" data-category="beaches">
+                        <h3><i class="fas fa-umbrella-beach"></i> Beaches</h3>
+                        <div class="activities">
+                            <div class="activity" draggable="true" data-type="beach">
+                                <i class="fas fa-umbrella-beach"></i>
+                                <span>Waikiki Beach</span>
+                            </div>
+                            <div class="activity" draggable="true" data-type="beach">
+                                <i class="fas fa-umbrella-beach"></i>
+                                <span>Lanikai Beach</span>
+                            </div>
+                            <div class="activity" draggable="true" data-type="beach">
+                                <i class="fas fa-umbrella-beach"></i>
+                                <span>Hanauma Bay</span>
+                            </div>
+                            <div class="activity" draggable="true" data-type="beach">
+                                <i class="fas fa-umbrella-beach"></i>
+                                <span>Kailua Beach</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category" data-category="restaurants">
+                        <h3><i class="fas fa-utensils"></i> Restaurants</h3>
+                        <div class="activities">
+                            <div class="activity" draggable="true" data-type="restaurant">
+                                <i class="fas fa-utensils"></i>
+                                <span>Duke's Waikiki</span>
+                            </div>
+                            <div class="activity" draggable="true" data-type="restaurant">
+                                <i class="fas fa-utensils"></i>
+                                <span>Roy's Hawaii Kai</span>
+                            </div>
+                            <div class="activity" draggable="true" data-type="restaurant">
+                                <i class="fas fa-utensils"></i>
+                                <span>Helena's Hawaiian Food</span>
+                            </div>
+                            <div class="activity" draggable="true" data-type="restaurant">
+                                <i class="fas fa-utensils"></i>
+                                <span>Giovanni's Shrimp Truck</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category" data-category="attractions">
+                        <h3><i class="fas fa-mountain"></i> Attractions</h3>
+                        <div class="activities">
+                            <div class="activity" draggable="true" data-type="attraction">
+                                <i class="fas fa-mountain"></i>
+                                <span>Diamond Head Hike</span>
+                            </div>
+                            <div class="activity" draggable="true" data-type="attraction">
+                                <i class="fas fa-water"></i>
+                                <span>Pearl Harbor</span>
+                            </div>
+                            <div class="activity" draggable="true" data-type="attraction">
+                                <i class="fas fa-tree"></i>
+                                <span>Nu'uanu Pali Lookout</span>
+                            </div>
+                            <div class="activity" draggable="true" data-type="attraction">
+                                <i class="fas fa-fish"></i>
+                                <span>Snorkeling Tour</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category" data-category="shopping">
+                        <h3><i class="fas fa-shopping-bag"></i> Shopping</h3>
+                        <div class="activities">
+                            <div class="activity" draggable="true" data-type="shopping">
+                                <i class="fas fa-shopping-bag"></i>
+                                <span>Ala Moana Center</span>
+                            </div>
+                            <div class="activity" draggable="true" data-type="shopping">
+                                <i class="fas fa-shopping-bag"></i>
+                                <span>International Market Place</span>
+                            </div>
+                            <div class="activity" draggable="true" data-type="shopping">
+                                <i class="fas fa-shopping-bag"></i>
+                                <span>Waikiki Beach Walk</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Custom Activity -->
+                <div class="add-custom-activity">
+                    <h3><i class="fas fa-plus"></i> Add Custom Activity</h3>
+                    <div class="custom-activity-form">
+                        <input type="text" id="custom-activity-name" placeholder="Activity name">
+                        <select id="custom-activity-type">
+                            <option value="custom">Custom</option>
+                            <option value="beach">Beach</option>
+                            <option value="restaurant">Restaurant</option>
+                            <option value="attraction">Attraction</option>
+                            <option value="shopping">Shopping</option>
+                        </select>
+                        <button id="add-custom-btn">Add</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Itinerary Days -->
+            <section class="itinerary-days">
+                <div class="days-header">
+                    <h2><i class="fas fa-calendar-alt"></i> Your Itinerary</h2>
+                    <div class="days-controls">
+                        <button id="add-day-btn"><i class="fas fa-plus"></i> Add Day</button>
+                        <button id="clear-all-btn"><i class="fas fa-trash"></i> Clear All</button>
+                    </div>
+                </div>
+                
+                <div class="days-container" id="days-container">
+                    <!-- Days will be generated here -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Summary Section -->
+        <section class="summary-section">
+            <h2><i class="fas fa-chart-bar"></i> Trip Summary</h2>
+            <div class="summary-stats">
+                <div class="stat">
+                    <span class="stat-number" id="total-days">0</span>
+                    <span class="stat-label">Days</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" id="total-activities">0</span>
+                    <span class="stat-label">Activities</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" id="beach-count">0</span>
+                    <span class="stat-label">Beaches</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" id="restaurant-count">0</span>
+                    <span class="stat-label">Restaurants</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🌺 Made with aloha for your Hawaiian adventure 🌺</p>
+            <div class="footer-actions">
+                <button id="export-btn"><i class="fas fa-download"></i> Export Plan</button>
+                <button id="print-btn"><i class="fas fa-print"></i> Print</button>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
